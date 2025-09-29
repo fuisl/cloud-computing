@@ -1,0 +1,19 @@
+{
+  "name": "dev (docker-compose)",
+  "dockerComposeFile": ["../docker-compose.yaml"],
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "overrideCommand": false,
+  "runServices": ["dev"],
+  "remoteUser": "dev",
+
+  "customizations": { "vscode": { "extensions": ["ms-azuretools.vscode-docker","ms-python.python"] } },
+
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh/id_ed25519_github,target=/home/dev/.ssh/id_ed25519_github,type=bind,readonly,consistency=cached",
+    "source=${localEnv:HOME}/.ssh/id_ed25519_github.pub,target=/home/dev/.ssh/id_ed25519_github.pub,type=bind,readonly,consistency=cached"
+  ],
+  
+  
+  "postCreateCommand": "sh -lc \"mkdir -p ~/.ssh && chmod 700 ~/.ssh; cat > ~/.ssh/config <<'EOF'\nHost github.com\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/id_ed25519_github\n  IdentitiesOnly yes\n  StrictHostKeyChecking accept-new\nEOF\nchmod 600 ~/.ssh/config; git config --global user.name \\\"fuisl\\\"; git config --global user.email \\\"135719107+fuisl@users.noreply.github.com\\\"; git config --global core.sshCommand \\\"ssh -i ~/.ssh/id_ed25519_github -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new\\\"\""
+}

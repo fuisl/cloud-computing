@@ -1,0 +1,30 @@
+services:
+  aws:
+    image: amazon/aws-cli:latest
+    container_name: aws
+    volumes:
+      - ./:/workspace
+      - ${HOME}/.aws:/home/aws/.aws
+    working_dir: /workspace
+    environment:
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+    user: "502:20"
+    tty: true
+
+  dev:
+    build:
+      context: ./dev
+      dockerfile: Dockerfile
+    container_name: dev
+    volumes:
+      - ./:/workspace
+      # - ${HOME}/.ssh:/home/dev/.ssh:ro
+      - ${HOME}/.aws:/home/dev/.aws
+    working_dir: /workspace
+    environment:
+      - TZ=UTC
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+    user: "502:20"
+    tty: true
