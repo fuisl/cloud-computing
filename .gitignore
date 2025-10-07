@@ -1,0 +1,4 @@
+*.pem
+*.log
+*.tmp
+my-app/target/
